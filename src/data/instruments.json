@@ -54,6 +54,117 @@
       "category": "Accesorios",
       "description": "Amplificador de guitarra con múltiples efectos.",
       "imageUrl": "https://via.placeholder.com/300x300.png?text=Amplificador"
+    },
+    {
+      "name": "Guitarra Española",
+      "price": "$300.000",
+      "category": "Guitarras Clásicas",
+      "description": "Guitarra clásica con cuerdas de nylon y sonido cálido.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Guitarra+Espa%C3%B1ola"
+    },
+    {
+      "name": "Guitarra Electroacústica",
+      "price": "$550.000",
+      "category": "Guitarras Clásicas",
+      "description": "Guitarra electroacústica con preamplificador incorporado.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Guitarra+Electroac%C3%BAstica"
+    },
+    {
+      "name": "Bajo 1",
+      "price": "$450.000",
+      "category": "Bajos",
+      "description": "Bajo eléctrico de 4 cuerdas con gran potencia y definición.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Bajo+1"
+    },
+    {
+      "name": "Cajón",
+      "price": "$200.000",
+      "category": "Baterías / Percusión",
+      "description": "Cajón peruano ideal para acompañar diversos estilos musicales.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Caj%C3%B3n"
+    },
+    {
+      "name": "Flauta Traversa",
+      "price": "$350.000",
+      "category": "Vientos",
+      "description": "Flauta travesera plateada con estuche de transporte.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Flauta+Traversa"
+    },
+    {
+      "name": "Clarinete",
+      "price": "$300.000",
+      "category": "Vientos",
+      "description": "Clarinete Bb con estuche y boquilla incluidos.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Clarinete"
+    },
+    {
+      "name": "Flauta Dulce",
+      "price": "$50.000",
+      "category": "Vientos",
+      "description": "Flauta dulce soprano para principiantes y estudiantes.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Flauta+Dulce"
+    },
+    {
+      "name": "Batería 2",
+      "price": "$850.000",
+      "category": "Baterías / Percusión",
+      "description": "Batería acústica profesional con platillos incluidos.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Bater%C3%ADa+2"
+    },
+    {
+      "name": "Maracas",
+      "price": "$20.000",
+      "category": "Baterías / Percusión",
+      "description": "Par de maracas de madera con sonido tradicional.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Maracas"
+    },
+    {
+      "name": "Micrófono",
+      "price": "$100.000",
+      "category": "Accesorios",
+      "description": "Micrófono dinámico con cable XLR incluido.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Micr%C3%B3fono"
+    },
+    {
+      "name": "Cables",
+      "price": "$15.000",
+      "category": "Accesorios",
+      "description": "Cables para instrumentos y micrófonos de alta calidad.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Cables"
+    },
+    {
+      "name": "Armónica",
+      "price": "$75.000",
+      "category": "Vientos",
+      "description": "Armónica en C mayor con estuche protector.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Arm%C3%B3nica"
+    },
+    {
+      "name": "12 Cuerdas",
+      "price": "$750.000",
+      "category": "Guitarras Clásicas",
+      "description": "Guitarra de 12 cuerdas con sonido lleno y resonante.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=12+Cuerdas"
+    },
+    {
+      "name": "Pandereta",
+      "price": "$40.000",
+      "category": "Baterías / Percusión",
+      "description": "Pandereta de madera con sonajas de metal.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Pandereta"
+    },
+    {
+      "name": "Banjo",
+      "price": "$500.000",
+      "category": "Guitarras & Bajos",
+      "description": "Banjo de 5 cuerdas con resonador y puente ajustable.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Banjo"
+    },
+    {
+      "name": "Mandolina",
+      "price": "$400.000",
+      "category": "Guitarras & Bajos",
+      "description": "Mandolina acústica con 8 cuerdas y cuerpo de madera.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Mandolina"
     }
-  ]
-  
+]

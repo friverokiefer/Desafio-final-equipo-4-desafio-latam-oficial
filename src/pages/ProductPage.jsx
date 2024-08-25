@@ -7,7 +7,7 @@ function ProductPage() {
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
-    fetch("/src/data/instruments.json")
+    fetch("/src/data/instruments.json")  // Asegúrate de que la ruta es correcta
       .then((response) => response.json())
       .then((data) => {
         const product = data[id];

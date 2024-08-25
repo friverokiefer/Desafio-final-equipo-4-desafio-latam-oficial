@@ -23,22 +23,22 @@ function Header() {
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <Link className="nav-link" to="/">
-                Home
+                Inicio
               </Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/profile">
-                Profile
+                Perfil
               </Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/login">
-                Login
+                Iniciar Sesión
               </Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/register">
-                Register
+                Registrarse
               </Link>
             </li>
           </ul>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import Pagination from "./Pagination";
 
 function HomePage() {
   const [instruments, setInstruments] = useState([]);
@@ -7,12 +8,14 @@ function HomePage() {
   const instrumentsPerPage = 6;
 
   useEffect(() => {
+    // Aseguramos la ruta relativa para el fetch
     fetch("/src/data/instruments.json")
       .then((response) => response.json())
       .then((data) => setInstruments(data))
       .catch((error) => console.error("Error al cargar los datos:", error));
   }, []);
 
+  // Obtener los instrumentos para la página actual
   const indexOfLastInstrument = currentPage * instrumentsPerPage;
   const indexOfFirstInstrument = indexOfLastInstrument - instrumentsPerPage;
   const currentInstruments = instruments.slice(
@@ -20,6 +23,7 @@ function HomePage() {
     indexOfLastInstrument
   );
 
+  // Cambiar de página
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
@@ -32,29 +36,23 @@ function HomePage() {
         {currentInstruments.map((instrument, index) => (
           <div key={index} className="col-md-4 mb-4">
             <Link to={`/product/${index}`}>
-              <div className="card">
+              <div className="card h-100">
                 <img
                   src={instrument.imageUrl}
                   alt={instrument.name}
                   className="card-img-top"
                 />
-                <div className="card-body">
+                <div className="card-body d-flex flex-column">
                   <h5 className="card-title">{instrument.name}</h5>
-                  {instrument.price && (
-                    <p className="card-text">
-                      <strong>Precio:</strong> {instrument.price}
-                    </p>
-                  )}
-                  {instrument.category && (
-                    <p className="card-text">
-                      <strong>Categoría:</strong> {instrument.category}
-                    </p>
-                  )}
-                  {instrument.description && (
-                    <p className="card-text">
-                      <strong>Descripción:</strong> {instrument.description}
-                    </p>
-                  )}
+                  <p className="card-text">
+                    <strong>Precio:</strong> {instrument.price}
+                  </p>
+                  <p className="card-text">
+                    <strong>Categoría:</strong> {instrument.category}
+                  </p>
+                  <p className="card-text">
+                    <strong>Descripción:</strong> {instrument.description}
+                  </p>
                 </div>
               </div>
             </Link>
