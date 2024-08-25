@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 
 function HomePage() {
   const [instruments, setInstruments] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const instrumentsPerPage = 6;
 
   useEffect(() => {
     fetch("/src/data/instruments.json")
@@ -11,14 +13,23 @@ function HomePage() {
       .catch((error) => console.error("Error al cargar los datos:", error));
   }, []);
 
+  const indexOfLastInstrument = currentPage * instrumentsPerPage;
+  const indexOfFirstInstrument = indexOfLastInstrument - instrumentsPerPage;
+  const currentInstruments = instruments.slice(
+    indexOfFirstInstrument,
+    indexOfLastInstrument
+  );
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <div>
       <h1>Bienvenido a la Tienda de Música</h1>
-      <p>Explora nuestra colección de instrumentos musicales.</p>
+      <p>Explora nuestra colección de instrumentos musicales por categorías.</p>
 
       <h2>Nuestros Instrumentos</h2>
       <div className="row">
-        {instruments.map((instrument, index) => (
+        {currentInstruments.map((instrument, index) => (
           <div key={index} className="col-md-4 mb-4">
             <Link to={`/product/${index}`}>
               <div className="card">
@@ -50,6 +61,11 @@ function HomePage() {
           </div>
         ))}
       </div>
+      <Pagination
+        instrumentsPerPage={instrumentsPerPage}
+        totalInstruments={instruments.length}
+        paginate={paginate}
+      />
     </div>
   );
 }

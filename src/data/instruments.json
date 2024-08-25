@@ -1,45 +1,59 @@
 [
     {
-      "name": "Guitarra Acústica",
-      "price": "$200.000",
-      "category": "Cuerdas",
-      "description": "Una guitarra acústica con excelente resonancia y acabado natural.",
-      "imageUrl": "https://via.placeholder.com/300x300.png?text=Guitarra"
+      "name": "Stratocaster",
+      "price": "$500.000",
+      "category": "Guitarras Eléctricas",
+      "description": "Una guitarra eléctrica icónica con un sonido versátil.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Stratocaster"
     },
     {
-      "name": "Piano Eléctrico",
-      "price": "$1.500.000",
-      "category": "Teclados",
-      "description": "Piano eléctrico con 88 teclas y funciones de grabación.",
-      "imageUrl": "https://via.placeholder.com/300x300.png?text=Piano"
-    },
-    {
-      "name": "Batería Completa",
-      "price": "$800.000",
-      "category": "Percusión",
-      "description": "Batería acústica completa con platillos de alta calidad.",
-      "imageUrl": "https://via.placeholder.com/300x300.png?text=Batería"
-    },
-    {
-      "name": "Violín Clásico",
-      "price": "$300.000",
-      "category": "Cuerdas",
-      "description": "Violín clásico ideal para estudiantes avanzados.",
-      "imageUrl": "https://via.placeholder.com/300x300.png?text=Violín"
-    },
-    {
-      "name": "Saxofón Alto",
+      "name": "Les Paul",
       "price": "$600.000",
-      "category": "Viento",
-      "description": "Saxofón alto con estuche rígido y accesorios incluidos.",
-      "imageUrl": "https://via.placeholder.com/300x300.png?text=Saxofón"
+      "category": "Guitarras Eléctricas",
+      "description": "Una guitarra eléctrica con un tono rico y sustain prolongado.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Les+Paul"
     },
     {
-      "name": "Trompeta Dorada",
-      "price": "$450.000",
-      "category": "Viento",
-      "description": "Trompeta dorada con excelente afinación y brillo.",
-      "imageUrl": "https://via.placeholder.com/300x300.png?text=Trompeta"
+      "name": "Gibson",
+      "price": "$700.000",
+      "category": "Guitarras Eléctricas",
+      "description": "Guitarra eléctrica premium con acabados de alta calidad.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Gibson"
+    },
+    {
+      "name": "Piano Digital",
+      "price": "$1.200.000",
+      "category": "Pianos & Teclados",
+      "description": "Piano digital con 88 teclas y múltiples opciones de sonido.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Piano+Digital"
+    },
+    {
+      "name": "Teclado",
+      "price": "$400.000",
+      "category": "Pianos & Teclados",
+      "description": "Teclado compacto con múltiples funciones de sonido.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Teclado"
+    },
+    {
+      "name": "Batería 1",
+      "price": "$800.000",
+      "category": "Baterías / Percusión",
+      "description": "Batería acústica completa para principiantes y profesionales.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Bater%C3%ADa+1"
+    },
+    {
+      "name": "Saxofón",
+      "price": "$900.000",
+      "category": "Vientos",
+      "description": "Saxofón alto con estuche y boquilla incluida.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Saxof%C3%B3n"
+    },
+    {
+      "name": "Amplificador",
+      "price": "$250.000",
+      "category": "Accesorios",
+      "description": "Amplificador de guitarra con múltiples efectos.",
+      "imageUrl": "https://via.placeholder.com/300x300.png?text=Amplificador"
     }
   ]
   
