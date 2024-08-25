@@ -1,0 +1,43 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #FFFFFF;
+  margin: 0;
+  padding: 0;
+  color: #343A40;
+}
+
+h1, h2 {
+  margin-bottom: 20px;
+  color: #007BFF;
+}
+
+.navbar, footer {
+  background-color: #F8F9FA;
+}
+
+.container {
+  padding-top: 20px;
+}
+
+.instrument-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  padding-bottom: 15px;
+}
+
+.instrument-gallery .card {
+  border: none;
+  transition: transform 0.2s;
+}
+
+.instrument-gallery .card:hover {
+  transform: scale(1.05);
+}
+
+.instrument-gallery img {
+  border-radius: 5px;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
