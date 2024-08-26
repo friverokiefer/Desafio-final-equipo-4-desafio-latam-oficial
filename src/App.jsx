@@ -1,3 +1,5 @@
+// src/App.jsx
+
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
@@ -5,6 +7,7 @@ import ProductPage from "./pages/ProductPage";
 import ProfilePage from "./pages/ProfilePage";
 import LoginPage from "./pages/LoginPage";
 import RegistrationPage from "./pages/RegistrationPage";
+import CartPage from "./pages/CartPage"; // Importar la página del carrito
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -19,6 +22,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegistrationPage />} />
+          <Route path="/cart" element={<CartPage />} /> {/* Añadir la ruta del carrito */}
         </Routes>
       </div>
       <Footer />
