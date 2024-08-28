@@ -30,7 +30,13 @@ function ProductPage() {
     return (
         <div>
             <h1>{instrument.name}</h1>
-            <img src={instrument.imageUrl} alt={instrument.name} className="img-fluid mb-3" />
+            <img
+    src={instrument.imageUrl}
+    alt={instrument.name}
+    className="img-fluid mb-3"
+    style={{ width: '33%', maxWidth: '300px' }}  // Estilo agregado
+/>
+
             <p><strong>Precio:</strong> ${instrument.price}</p>
             <p><strong>Categoría:</strong> {instrument.category}</p>
             <p><strong>Descripción:</strong> {instrument.description}</p>
