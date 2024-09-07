@@ -2,19 +2,27 @@
   "name": "music-store",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
+  "start": "node src/index.cjs",
+  "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
+    "axios": "^1.7.7",
+    "bcryptjs": "^2.4.3",
     "bootstrap": "^5.3.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.12.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-icons": "^5.3.0",
     "react-router-dom": "^6.26.1"
   },
   "devDependencies": {

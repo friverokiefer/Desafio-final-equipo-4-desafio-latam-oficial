@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "name": "Stratocaster",
     "price": "$500.000",
     "category": "Guitarras Eléctricas",
@@ -7,6 +8,7 @@
     "imageUrl": "/img/estrato.jpg"
   },
   {
+    "id": 2,
     "name": "Les Paul",
     "price": "$600.000",
     "category": "Guitarras Eléctricas",
@@ -14,6 +16,7 @@
     "imageUrl": "/img/les.jpg"
   },
   {
+    "id": 3,
     "name": "Gibson",
     "price": "$700.000",
     "category": "Guitarras Eléctricas",
@@ -21,6 +24,7 @@
     "imageUrl": "/img/gibson.jpg"
   },
   {
+    "id": 4,
     "name": "Piano Digital Kurzweil",
     "price": "$1.200.000",
     "category": "Pianos & Teclados",
@@ -28,6 +32,7 @@
     "imageUrl": "/img/piano.jpg"
   },
   {
+    "id": 5,
     "name": "Teclado",
     "price": "$400.000",
     "category": "Pianos & Teclados",
@@ -35,6 +40,7 @@
     "imageUrl": "/img/teclado.jpg"
   },
   {
+    "id": 6,
     "name": "Batería Acústica",
     "price": "$800.000",
     "category": "Baterías / Percusión",
@@ -42,6 +48,7 @@
     "imageUrl": "/img/bateria.jpg"
   },
   {
+    "id": 7,
     "name": "Saxofón",
     "price": "$900.000",
     "category": "Vientos",
@@ -49,6 +56,7 @@
     "imageUrl": "/img/saxo.jpg"
   },
   {
+    "id": 8,
     "name": "Amplificador",
     "price": "$250.000",
     "category": "Accesorios",
@@ -56,6 +64,7 @@
     "imageUrl": "/img/ampli.jpg"
   },
   {
+    "id": 9,
     "name": "Guitarra Española",
     "price": "$300.000",
     "category": "Guitarras Clásicas",
@@ -63,6 +72,7 @@
     "imageUrl": "/img/espanola.jpg"
   },
   {
+    "id": 10,
     "name": "Guitarra Electroacústica",
     "price": "$550.000",
     "category": "Guitarras Clásicas",
@@ -70,6 +80,7 @@
     "imageUrl": "/img/electro.jpg"
   },
   {
+    "id": 11,
     "name": "Bajo 1",
     "price": "$450.000",
     "category": "Bajos",
@@ -77,6 +88,7 @@
     "imageUrl": "/img/bajo.jpg"
   },
   {
+    "id": 12,
     "name": "Cajón Tropicana",
     "price": "$200.000",
     "category": "Baterías / Percusión",
@@ -84,6 +96,7 @@
     "imageUrl": "/img/cajon.jpg"
   },
   {
+    "id": 13,
     "name": "Flauta Traversa",
     "price": "$350.000",
     "category": "Vientos",
@@ -91,6 +104,7 @@
     "imageUrl": "/img/traversa.jpg"
   },
   {
+    "id": 14,
     "name": "Clarinete",
     "price": "$300.000",
     "category": "Vientos",
@@ -98,6 +112,7 @@
     "imageUrl": "/img/clarinete.jpg"
   },
   {
+    "id": 15,
     "name": "Flauta Dulce Hohner",
     "price": "$50.000",
     "category": "Vientos",
@@ -105,6 +120,7 @@
     "imageUrl": "/img/flauta.jpg"
   },
   {
+    "id": 16,
     "name": "Batería Electrónica",
     "price": "$850.000",
     "category": "Baterías / Percusión",
@@ -112,6 +128,7 @@
     "imageUrl": "/img/bateria2.jpg"
   },
   {
+    "id": 17,
     "name": "Maracas",
     "price": "$20.000",
     "category": "Baterías / Percusión",
@@ -119,6 +136,7 @@
     "imageUrl": "/img/maracas.jpg"
   },
   {
+    "id": 18,
     "name": "Micrófono",
     "price": "$100.000",
     "category": "Accesorios",
@@ -126,6 +144,7 @@
     "imageUrl": "/img/mic.jpg"
   },
   {
+    "id": 19,
     "name": "Cables",
     "price": "$15.000",
     "category": "Accesorios",
@@ -133,6 +152,7 @@
     "imageUrl": "/img/cable.jpg"
   },
   {
+    "id": 20,
     "name": "Armónica",
     "price": "$75.000",
     "category": "Vientos",
@@ -140,6 +160,7 @@
     "imageUrl": "/img/armonica.jpg"
   },
   {
+    "id": 21,
     "name": "Guitarra 12 Cuerdas Electroacústica",
     "price": "$750.000",
     "category": "Guitarras Clásicas",
@@ -147,6 +168,7 @@
     "imageUrl": "/img/12cuerdas.jpg"
   },
   {
+    "id": 22,
     "name": "Pandereta",
     "price": "$40.000",
     "category": "Baterías / Percusión",
@@ -154,6 +176,7 @@
     "imageUrl": "/img/pandereta.jpg"
   },
   {
+    "id": 23,
     "name": "Banjo",
     "price": "$500.000",
     "category": "Guitarras & Bajos",
@@ -161,6 +184,7 @@
     "imageUrl": "/img/banjo.jpg"
   },
   {
+    "id": 24,
     "name": "Mandolina",
     "price": "$400.000",
     "category": "Guitarras & Bajos",

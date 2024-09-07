@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+// src/pages/HomePage.jsx
+
+import React, { useState, useEffect, useContext } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Pagination from "./Pagination";
+import { CartContext } from "../context/CartContext"; // Importa el contexto del carrito
 
 function HomePage() {
   const [instruments, setInstruments] = useState([]);
@@ -9,6 +12,10 @@ function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortOrder, setSortOrder] = useState("asc");
   const instrumentsPerPage = 6;
+
+  const { addToCart } = useContext(CartContext); // Usa la función addToCart desde el contexto
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("/src/data/instruments.json")
@@ -20,28 +27,38 @@ function HomePage() {
       .catch((error) => console.error("Error al cargar los datos:", error));
   }, []);
 
+  // Detecta cambios en la URL y restablece la categoría cuando la ruta es "/"
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const category = params.get("category");
+
+    if (category) {
+      setSelectedCategory(category);
+    } else if (location.pathname === "/") {
+      setSelectedCategory("All");
+    }
+  }, [location]);
+
   useEffect(() => {
     let filtered = instruments;
 
+    // Aplica el filtro de categoría si no es "All"
     if (selectedCategory !== "All") {
       filtered = instruments.filter(
         (instrument) => instrument.category === selectedCategory
       );
     }
 
+    // Ordena los instrumentos según el orden seleccionado
     if (sortOrder === "asc") {
       filtered.sort((a, b) =>
-        parseFloat(a.price.replace(/[^\d.-]/g, "")) >
+        parseFloat(a.price.replace(/[^\d.-]/g, "")) -
         parseFloat(b.price.replace(/[^\d.-]/g, ""))
-          ? 1
-          : -1
       );
     } else {
       filtered.sort((a, b) =>
-        parseFloat(a.price.replace(/[^\d.-]/g, "")) <
-        parseFloat(b.price.replace(/[^\d.-]/g, ""))
-          ? 1
-          : -1
+        parseFloat(b.price.replace(/[^\d.-]/g, "")) -
+        parseFloat(a.price.replace(/[^\d.-]/g, ""))
       );
     }
 
@@ -66,9 +83,29 @@ function HomePage() {
     setSortOrder(e.target.value);
   };
 
+  const handleAddToCart = (instrument) => {
+    addToCart(instrument, 1); // Agrega el producto al carrito con cantidad 1
+    alert(`${instrument.name} añadido al carrito`);
+  };
+
+  const handleBuyNow = (instrument) => {
+    handleAddToCart(instrument); // Añade al carrito
+    window.location.href = "/cart"; // Redirige al usuario a la página del carrito
+  };
+
+  // Función para ir a Inicio y resetear filtros
+  const goToHome = () => {
+    navigate("/");
+    setSelectedCategory("All");
+  };
+
   return (
     <div>
-      <h1>Bienvenido a la Tienda de Música</h1>
+      <h1>
+        <span onClick={goToHome} style={{ cursor: "pointer" }}>
+          Music Store
+        </span>
+      </h1>
       <p>Explora nuestra colección de instrumentos musicales por categorías.</p>
 
       <div className="row mb-4">
@@ -110,29 +147,46 @@ function HomePage() {
 
       <h2>Nuestros Instrumentos</h2>
       <div className="row">
-        {currentInstruments.map((instrument, index) => (
-          <div key={index} className="col-md-4 mb-4">
-            <Link to={`/product/${index}`}>
-              <div className="card h-100">
+        {currentInstruments.map((instrument) => (
+          <div key={instrument.id} className="col-md-4 mb-4">
+            <div className="card h-100">
+              <Link
+                to={`/product/${instrument.id}`}
+                className="text-decoration-none text-dark"
+              >
                 <img
                   src={instrument.imageUrl}
                   alt={instrument.name}
                   className="card-img-top"
                 />
-                <div className="card-body d-flex flex-column">
-                  <h5 className="card-title">{instrument.name}</h5>
-                  <p className="card-text">
-                    <strong>Precio:</strong> {instrument.price}
-                  </p>
-                  <p className="card-text">
-                    <strong>Categoría:</strong> {instrument.category}
-                  </p>
-                  <p className="card-text">
-                    <strong>Descripción:</strong> {instrument.description}
-                  </p>
+              </Link>
+              <div className="card-body d-flex flex-column">
+                <h5 className="card-title">{instrument.name}</h5>
+                <p className="card-text">
+                  <strong>Precio:</strong> {instrument.price}
+                </p>
+                <p className="card-text">
+                  <strong>Categoría:</strong> {instrument.category}
+                </p>
+                <p className="card-text text-dark">
+                  <strong>Descripción:</strong> {instrument.description}
+                </p>
+                <div className="d-flex justify-content-between mt-auto">
+                  <button
+                    className="btn btn-primary me-2 w-50"
+                    onClick={() => handleAddToCart(instrument)}
+                  >
+                    Agregar a Carrito
+                  </button>
+                  <button
+                    className="btn btn-success w-50"
+                    onClick={() => handleBuyNow(instrument)}
+                  >
+                    Comprar Ahora
+                  </button>
                 </div>
               </div>
-            </Link>
+            </div>
           </div>
         ))}
       </div>
@@ -146,3 +200,4 @@ function HomePage() {
 }
 
 export default HomePage;
+
