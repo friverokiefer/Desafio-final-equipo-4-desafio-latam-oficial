@@ -1,66 +1,92 @@
-// src/pages/RegistrationPage.jsx
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
-function RegistrationPage() {
-  const [username, setUsername] = useState(""); // Cambiar a username
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [direccion, setDireccion] = useState("");
-  const [telefono, setTelefono] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+const RegistrationPage = () => {
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    direccion: "",
+    telefono: "",
+    imageUrl: "", // URL de la imagen
+  });
 
-  const navigate = useNavigate();
+  const [error, setError] = useState("");
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      await axios.post("http://localhost:5000/api/users/register", { // Asegúrate de que la URL esté correcta
-        username,
-        email,
-        password,
-        direccion,
-        telefono,
-      });
-      
-      alert("Registro exitoso");
-      navigate("/login");
+      const response = await axios.post("http://localhost:5000/api/users/register", formData);
+      console.log("Usuario registrado con éxito:", response.data);
+      alert("Usuario registrado exitosamente.");
     } catch (error) {
       console.error("Error al registrarse:", error);
-      setErrorMessage("Hubo un problema con el registro. Inténtalo nuevamente.");
+      setError("Hubo un problema con el registro. Inténtelo de nuevo.");
     }
   };
 
   return (
     <div>
-      <h1>Registrarse</h1>
+      <h2>Registrarse</h2>
       <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="username" className="form-label">Nombre de Usuario</label> {/* Cambiar a username */}
-          <input type="text" className="form-control" id="username" value={username} onChange={(e) => setUsername(e.target.value)} required /> {/* Cambiar a username */}
-        </div>
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label">Dirección de correo electrónico</label>
-          <input type="email" className="form-control" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="password" className="form-label">Contraseña</label>
-          <input type="password" className="form-control" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="direccion" className="form-label">Dirección</label>
-          <input type="text" className="form-control" id="direccion" value={direccion} onChange={(e) => setDireccion(e.target.value)} required />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="telefono" className="form-label">Teléfono</label>
-          <input type="text" className="form-control" id="telefono" value={telefono} onChange={(e) => setTelefono(e.target.value)} required />
-        </div>
-        {errorMessage && <p className="text-danger">{errorMessage}</p>}
-        <button type="submit" className="btn btn-primary">Registrarse</button>
+        <input
+          type="text"
+          name="username"
+          placeholder="Nombre de usuario"
+          value={formData.username}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Correo electrónico"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Contraseña"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="text"
+          name="direccion"
+          placeholder="Dirección"
+          value={formData.direccion}
+          onChange={handleChange}
+        />
+        <input
+          type="tel"
+          name="telefono"
+          placeholder="Teléfono"
+          value={formData.telefono}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="imageUrl"
+          placeholder="URL de la imagen"
+          value={formData.imageUrl}
+          onChange={handleChange}
+        />
+        <button type="submit">Registrarse</button>
       </form>
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
-}
+};
 
 export default RegistrationPage;

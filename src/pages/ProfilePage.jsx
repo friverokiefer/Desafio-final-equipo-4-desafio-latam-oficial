@@ -1,98 +1,122 @@
-// src/pages/ProfilePage.jsx
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 function ProfilePage() {
-  const [user, setUser] = useState(null);
-  const [cart, setCart] = useState([]);  // Aseguramos que cart inicie como un array
-  const [orders, setOrders] = useState([]);  // Aseguramos que orders inicie como un array
-  const navigate = useNavigate();
+  const { user } = useContext(AuthContext);  // user debería tener un id
 
+  const [profile, setProfile] = useState({
+    username: "",
+    email: "",
+    direccion: "",
+    telefono: "",
+    imageUrl: "",
+  });
+
+  // Este useEffect se ejecuta cuando user existe y tiene un id
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/login");
-      return;
+    if (user && user.id) {
+      axios.get(`/api/users/${user.id}`)
+        .then(response => {
+          setProfile(response.data);  // Aquí debes obtener los datos correctos
+        })
+        .catch(error => {
+          console.error("Error al obtener los datos del perfil:", error);
+        });
     }
+  }, [user]);
 
-    // Obtener los datos del perfil
-    axios
-      .get("/api/users/profile", { headers: { Authorization: `Bearer ${token}` } })
-      .then((response) => setUser(response.data))
-      .catch((error) => {
-        console.error("Error al obtener los datos del perfil:", error);
-        navigate("/login");
-      });
+  const [editMode, setEditMode] = useState(false);
 
-    // Obtener el carrito
-    axios
-      .get("/api/users/cart", { headers: { Authorization: `Bearer ${token}` } })
-      .then((response) => {
-        const cartData = Array.isArray(response.data) ? response.data : []; // Convertir a array si no lo es
-        setCart(cartData);
-      })
-      .catch((error) => {
-        console.error("Error al obtener el carrito:", error);
-        setCart([]); // Establecer como un array vacío en caso de error
-      });
+  const handleInputChange = (e) => {
+    setProfile({ ...profile, [e.target.name]: e.target.value });
+  };
 
-    // Obtener compras pasadas
-    axios
-      .get("/api/users/orders", { headers: { Authorization: `Bearer ${token}` } })
-      .then((response) => {
-        const ordersData = Array.isArray(response.data) ? response.data : []; // Convertir a array si no lo es
-        setOrders(ordersData);
-      })
-      .catch((error) => {
-        console.error("Error al obtener las compras:", error);
-        setOrders([]); // Establecer como un array vacío en caso de error
-      });
-  }, [navigate]);
+  const handleEditProfile = () => {
+    setEditMode(true);
+  };
 
-  if (!user) {
-    return <p>Cargando perfil...</p>;
-  }
+  const handleSaveProfile = async () => {
+    try {
+      await axios.patch(`/api/users/${user.id}`, profile);
+      setEditMode(false);
+      alert("Perfil actualizado con éxito.");
+    } catch (error) {
+      console.error("Error al actualizar el perfil:", error);
+    }
+  };
 
   return (
-    <div>
-      <h1>Mi Perfil</h1>
-      <p>Bienvenido, {user.username}.</p>
-      <p>Email: {user.email}</p>
-      <p>Dirección: {user.direccion}</p>
-      <p>Teléfono: {user.telefono}</p>
+    <div className="container">
+      <h1 className="my-4">Mi Perfil</h1>
+      <div className="row">
+        <div className="col-md-6">
+          <h3>Bienvenido, {profile.username}</h3>
+          <img
+            src={profile.imageUrl || "/uploads/default.png"}
+            alt="Perfil"
+            className="img-thumbnail mb-3"
+            style={{ maxWidth: "200px" }}
+          />
+          <h4>Email: {profile.email}</h4>
+          <h4>Dirección: {profile.direccion}</h4>
+          <h4>Teléfono: {profile.telefono}</h4>
+        </div>
+      </div>
 
-      <h2>Resumen del Carrito</h2>
-      {cart.length > 0 ? (
-        <ul>
-          {cart.map((item, index) => (
-            <li key={index}>{item.nombre_producto} - {item.cantidad}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>No hay productos en el carrito.</p>
-      )}
-
-      <h2>Compras Pasadas</h2>
-      {orders.length > 0 ? (
-        <ul>
-          {orders.map((order, index) => (
-            <li key={index}>{order.nombre_producto} - {order.fecha_compra}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>No hay compras pasadas.</p>
-      )}
-
-      <button
-        className="btn btn-secondary"
-        onClick={() => {
-          localStorage.removeItem("token");
-          navigate("/login");
-        }}
-      >
-        Cerrar Sesión
-      </button>
+      <div className="mt-4">
+        {!editMode ? (
+          <button className="btn btn-primary" onClick={handleEditProfile}>
+            Editar Perfil
+          </button>
+        ) : (
+          <>
+            <input
+              type="text"
+              name="username"
+              value={profile.username}
+              onChange={handleInputChange}
+              className="form-control mb-2"
+              placeholder="Nombre de usuario"
+            />
+            <input
+              type="email"
+              name="email"
+              value={profile.email}
+              onChange={handleInputChange}
+              className="form-control mb-2"
+              placeholder="Email"
+            />
+            <input
+              type="text"
+              name="direccion"
+              value={profile.direccion}
+              onChange={handleInputChange}
+              className="form-control mb-2"
+              placeholder="Dirección"
+            />
+            <input
+              type="text"
+              name="telefono"
+              value={profile.telefono}
+              onChange={handleInputChange}
+              className="form-control mb-2"
+              placeholder="Teléfono"
+            />
+            <input
+              type="text"
+              name="imageUrl"
+              value={profile.imageUrl}
+              onChange={handleInputChange}
+              className="form-control mb-2"
+              placeholder="URL de la imagen"
+            />
+            <button className="btn btn-success" onClick={handleSaveProfile}>
+              Guardar Cambios
+            </button>
+          </>
+        )}
+      </div>
     </div>
   );
 }

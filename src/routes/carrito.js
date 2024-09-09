@@ -42,4 +42,30 @@ router.delete("/cart/:id", async (req, res) => {
   }
 });
 
+// Registrar una compra (mover productos del carrito al historial de compras)
+router.post("/compras", async (req, res) => {
+  const { purchases } = req.body;
+
+  try {
+    // Insertar cada compra en el historial de compras
+    for (let purchase of purchases) {
+      const { userId, productId, productName, quantity } = purchase;
+
+      // Suponiendo que tienes una tabla 'historial_compras'
+      await pool.query(
+        "INSERT INTO historial_compras (user_id, producto_id, nombre_producto, cantidad) VALUES ($1, $2, $3, $4)",
+        [userId, productId, productName, quantity]
+      );
+    }
+
+    // Limpiar el carrito después de completar la compra
+    await pool.query("DELETE FROM Detalle_Carrito WHERE user_id = $1", [purchases[0].userId]);
+
+    res.status(201).json({ message: "Compra registrada exitosamente" });
+  } catch (err) {
+    console.error("Error al registrar la compra:", err);
+    res.status(500).json({ error: "Error al registrar la compra" });
+  }
+});
+
 module.exports = router;

@@ -1,11 +1,13 @@
+// config/database.js
+
 const { Pool } = require('pg');
 
 const pool = new Pool({
-  user: 'admin', // El usuario que acabas de crear
-  host: 'localhost', // El host, generalmente localhost si es local
-  database: 'proyecto', // El nombre de la base de datos que creaste
-  password: 'desafiolatam', // La contraseña que asignaste al usuario admin
-  port: 5432, // Puerto por defecto de PostgreSQL
+  user: 'admin', // Asegúrate de que estas credenciales sean correctas
+  host: 'localhost',
+  database: 'proyecto',
+  password: 'desafiolatam',
+  port: 5432,
 });
 
 module.exports = pool;

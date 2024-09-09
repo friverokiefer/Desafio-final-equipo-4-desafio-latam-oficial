@@ -4,8 +4,8 @@ function Footer() {
   return (
     <footer className="bg-light text-center text-lg-start">
       <div className="text-center p-3">
-        © 2024 Music Store:
-        <a className="text-dark" href="/">
+        <span>© 2024 Music Store: </span>
+        <a className="text-dark" href="/" aria-label="Music Store Home">
           musicstore.com
         </a>
       </div>
