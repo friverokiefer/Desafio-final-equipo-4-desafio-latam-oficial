@@ -1,12 +1,18 @@
-// src/components/Header.jsx
-
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
-import { CartContext } from "../context/CartContext"; // Importa el contexto del carrito
-import { FaShoppingCart } from "react-icons/fa"; // Importa el icono del carrito
+import { Link, useNavigate } from "react-router-dom";
+import { CartContext } from "../context/CartContext";
+import { AuthContext } from "../context/AuthContext";
+import { FaShoppingCart } from "react-icons/fa";
 
 function Header() {
-  const { cart } = useContext(CartContext); // Obtén el contexto del carrito para mostrar la cantidad de elementos
+  const { cart } = useContext(CartContext);
+  const { isAuthenticated, user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -30,15 +36,29 @@ function Header() {
             <li className="nav-item">
               <Link className="nav-link" to="/">Inicio</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/profile">Perfil</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/login">Iniciar Sesión</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/register">Registrarse</Link>
-            </li>
+            {isAuthenticated ? (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/profile">
+                    Hola, {user ? user.username : "Usuario"}
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <button className="nav-link btn" onClick={handleLogout}>
+                    Cerrar Sesión
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/login">Iniciar Sesión</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/register">Registrarse</Link>
+                </li>
+              </>
+            )}
             <li className="nav-item">
               <Link className="nav-link d-flex align-items-center" to="/cart">
                 Carrito <span className="ms-1">({cart.length})</span> <FaShoppingCart className="ms-1" />
@@ -52,4 +72,3 @@ function Header() {
 }
 
 export default Header;
-
