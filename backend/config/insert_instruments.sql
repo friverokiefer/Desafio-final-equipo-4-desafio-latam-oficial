@@ -1,0 +1,42 @@
+-- insert_instruments.sql
+
+-- Asegúrate de que la tabla 'instruments' existe antes de ejecutar este script.
+-- Si no existe, puedes crearla con la siguiente instrucción:
+
+-- CREATE TABLE instruments (
+--     id BIGSERIAL PRIMARY KEY,
+--     name TEXT NOT NULL,
+--     price NUMERIC(10, 2) NOT NULL,
+--     category TEXT,
+--     description TEXT,
+--     image_url TEXT,
+--     stock INTEGER NOT NULL DEFAULT 0
+-- );
+
+-- Inserta datos en la tabla instruments
+
+INSERT INTO instruments (id, name, price, category, description, image_url, stock) VALUES
+(1, 'Stratocaster', 500000, 'Guitarras Eléctricas', 'Una guitarra eléctrica icónica con un sonido versátil y un diseño clásico que ha definido el rock and roll. La Stratocaster ofrece comodidad y facilidad de uso gracias a su contorno ergonómico. Su versatilidad la hace ideal para cualquier género musical, desde el blues hasta el metal.', '/public/img/estrato.jpg', 10),
+(2, 'Les Paul', 600000, 'Guitarras Eléctricas', 'Una guitarra eléctrica con un tono rico y sustain prolongado que se adapta perfectamente a los estilos de rock y blues. Su construcción sólida le da una gran resonancia y claridad en los tonos bajos. Es famosa por su capacidad para producir solos potentes y melodías envolventes.', '/public/img/les.jpg', 8),
+(3, 'Gibson', 700000, 'Guitarras Eléctricas', 'Guitarra eléctrica premium con acabados de alta calidad, ideal para músicos profesionales que buscan un sonido auténtico y profundo. La Gibson es conocida por su durabilidad y construcción robusta, ofreciendo una excelente respuesta de sonido y una tonalidad cálida.', '/public/img/gibson.jpg', 5),
+(4, 'Piano Digital Kurzweil', 1200000, 'Pianos & Teclados', 'Piano digital Kurzweil con 88 teclas y múltiples opciones de sonido, perfecto tanto para principiantes como para profesionales. Ofrece una experiencia auténtica de piano acústico gracias a su tecnología de muestreo avanzado. Viene con conectividad MIDI y salida de auriculares.', '/public/img/piano.jpg', 3),
+(5, 'Teclado', 400000, 'Pianos & Teclados', 'Teclado compacto con múltiples funciones de sonido, ideal para músicos en movimiento. Ofrece una gran variedad de tonos y ritmos que permiten crear composiciones complejas con facilidad. Su diseño ligero lo hace perfecto para presentaciones en vivo.', '/public/img/teclado.jpg', 7),
+(6, 'Batería Acústica', 800000, 'Baterías / Percusión', 'Batería acústica completa para principiantes y profesionales, incluye platillos y herrajes. Fabricada con materiales de alta calidad, ofrece un sonido potente y claro. Su configuración flexible permite adaptarla a diferentes estilos musicales.', '/public/img/bateria.jpg', 4),
+(7, 'Saxofón', 900000, 'Vientos', 'Saxofón alto con estuche y boquilla incluida, diseñado para estudiantes avanzados y profesionales. Su cuerpo de latón ofrece una proyección de sonido fuerte y clara. Viene con un diseño ergonómico que facilita la ejecución de notas complejas.', '/public/img/saxo.jpg', 6),
+(8, 'Amplificador', 250000, 'Accesorios', 'Amplificador de guitarra con múltiples efectos, ideal para músicos que buscan versatilidad y potencia. Ofrece controles fáciles de usar y una salida de gran calidad que realza el sonido de cualquier guitarra. Perfecto tanto para estudios como para presentaciones en vivo.', '/public/img/ampli.jpg', 15),
+(9, 'Guitarra Española', 300000, 'Guitarras Clásicas', 'Guitarra clásica con cuerdas de nylon y sonido cálido, perfecta para estilos flamencos y música clásica. Su diseño tradicional y su caja de resonancia proporcionan un sonido profundo y balanceado. Fabricada con maderas seleccionadas para un acabado elegante.', '/public/img/espanola.jpg', 9),
+(10, 'Guitarra Electroacústica', 550000, 'Guitarras Clásicas', 'Guitarra electroacústica con preamplificador incorporado, ideal para presentaciones en vivo y grabaciones. Ofrece una excelente resonancia acústica y una conectividad fácil a sistemas de amplificación. Construida con materiales de alta calidad para un sonido claro y preciso.', '/public/img/electro.jpg', 5),
+(11, 'Bajo 1', 450000, 'Bajos', 'Bajo eléctrico de 4 cuerdas con gran potencia y definición, ideal para cualquier estilo musical. Su diseño ergonómico permite tocar cómodamente durante largas sesiones. Ofrece una excelente respuesta de frecuencia para una experiencia de interpretación enriquecedora.', '/public/img/bajo.jpg', 7),
+(12, 'Cajón Tropicana', 200000, 'Baterías / Percusión', 'Cajón peruano Tropicana ideal para acompañar diversos estilos musicales, desde flamenco hasta jazz. Fabricado en madera de alta calidad, ofrece un sonido profundo y resonante. Su diseño compacto permite un fácil transporte.', '/public/img/cajon.jpg', 12),
+(13, 'Flauta Traversa', 350000, 'Vientos', 'Flauta travesera plateada con estuche de transporte, ideal para músicos de todos los niveles. Ofrece un sonido brillante y claro que se destaca en cualquier orquesta o banda. Su construcción robusta garantiza durabilidad y un rendimiento consistente.', '/public/img/traversa.jpg', 8),
+(14, 'Clarinete', 300000, 'Vientos', 'Clarinete Bb con estuche y boquilla incluidos, diseñado para músicos intermedios y avanzados. Su cuerpo de madera ofrece una tonalidad cálida y rica, perfecta para conciertos y grabaciones. Viene con un diseño ergonómico para facilitar la ejecución.', '/public/img/clarinete.jpg', 6),
+(15, 'Flauta Dulce Hohner', 50000, 'Vientos', 'Flauta dulce soprano Hohner para principiantes y estudiantes, ideal para la enseñanza en escuelas y colegios. Hecha de plástico resistente, ofrece una buena entonación y facilidad de uso. Viene con funda protectora.', '/public/img/flauta.jpg', 20),
+(16, 'Batería Electrónica', 850000, 'Baterías / Percusión', 'Batería electrónica profesional con pads de malla, ideal para práctica silenciosa y grabación en casa. Ofrece múltiples sonidos personalizables y conectividad MIDI para usar con software de producción musical. Incluye pedal de bombo y platillos.', '/public/img/bateria2.jpg', 5),
+(17, 'Maracas', 20000, 'Baterías / Percusión', 'Par de maracas de madera con sonido tradicional, ideal para música folclórica y tropical. Ofrecen un ritmo claro y preciso para acompañar cualquier tipo de música. Su diseño ergonómico facilita su uso prolongado.', '/public/img/maracas.jpg', 25),
+(18, 'Micrófono', 100000, 'Accesorios', 'Micrófono dinámico con cable XLR incluido, perfecto para voces e instrumentos en presentaciones en vivo. Su construcción robusta asegura durabilidad y fiabilidad. Ofrece un sonido claro con rechazo de ruido de fondo.', '/public/img/mic.jpg', 15),
+(19, 'Cables', 15000, 'Accesorios', 'Cables para instrumentos y micrófonos de alta calidad, ideales para estudios y conciertos. Ofrecen baja pérdida de señal y conectores duraderos. Disponibles en varias longitudes para mayor flexibilidad.', '/public/img/cable.jpg', 50),
+(20, 'Armónica', 75000, 'Vientos', 'Armónica en C mayor con estuche protector, ideal para principiantes y músicos de nivel intermedio. Ofrece un tono claro y brillante con excelente respuesta. Perfecta para blues, rock y música folclórica.', '/public/img/armonica.jpg', 18),
+(21, 'Guitarra 12 Cuerdas Electroacústica', 750000, 'Guitarras Clásicas', 'Guitarra de 12 cuerdas electroacústica con sonido lleno y resonante, ideal para crear texturas musicales ricas. Viene con preamplificador incorporado para una fácil amplificación en presentaciones en vivo. Su diseño clásico combina con una construcción robusta.', '/public/img/12cuerdas.jpg', 3),
+(22, 'Pandereta', 40000, 'Baterías / Percusión', 'Pandereta de madera con sonajas de metal, perfecta para acompañamientos rítmicos en diversos géneros musicales. Su sonido brillante añade color a cualquier interpretación. Ligera y fácil de manejar.', '/public/img/pandereta.jpg', 30),
+(23, 'Banjo', 500000, 'Guitarras & Bajos', 'Banjo de 5 cuerdas con resonador y puente ajustable, ideal para música country, bluegrass y folk. Ofrece un sonido vibrante y único con un sustain prolongado. Su construcción sólida garantiza durabilidad y una excelente proyección.', '/public/img/banjo.jpg', 4),
+(24, 'Mandolina', 400000, 'Guitarras & Bajos', 'Mandolina acústica con 8 cuerdas y cuerpo de madera, perfecta para música folk, bluegrass y celta. Su tamaño compacto y su sonido brillante la hacen ideal para acompañar cualquier género. Construida con materiales de alta calidad para una máxima durabilidad.', '/public/img/mandolina.jpg', 6);

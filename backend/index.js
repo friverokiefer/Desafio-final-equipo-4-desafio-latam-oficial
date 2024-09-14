@@ -7,29 +7,40 @@ import cors from 'cors';
 import pool from './config/database.js';
 import usersRouter from './routes/users.js';
 import carritoRouter from './routes/carrito.js';
-import comprasRouter from './routes/compras.js'; // Importar el router de compras
+import comprasRouter from './routes/compras.js';
 import instrumentosRouter from './routes/instrumentos.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5000;
 
+// Obtener __dirname en ES6
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // Middlewares
 app.use(express.json());
 app.use(cookieParser());
+
+// Configurar CORS
 app.use(
   cors({
-    origin: 'http://localhost:5173', // Ajustar según la URL del frontend
+    origin: 'http://localhost:5173', // URL del frontend en desarrollo
     credentials: true,
   })
 );
 
+// Configurar el servidor para servir archivos estáticos desde la carpeta 'public'
+app.use('/public', express.static(path.join(__dirname, 'public')));
+
 // Rutas
 app.use('/api/users', usersRouter);
 app.use('/api/carrito', carritoRouter);
-app.use('/api/compras', comprasRouter); // Usar el router de compras
-app.use('/api/instrumentos', instrumentosRouter);
+app.use('/api/compras', comprasRouter);
+app.use('/api/instruments', instrumentosRouter);
 
 // Verificar la conexión a la base de datos
 pool.connect((err) => {

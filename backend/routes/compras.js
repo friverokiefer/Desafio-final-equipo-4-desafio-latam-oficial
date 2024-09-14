@@ -23,6 +23,9 @@ router.post('/', async (req, res) => {
       email = decoded.email;
     }
 
+    // Iniciar una transacción
+    await pool.query('BEGIN');
+
     // Insertar la compra en la tabla purchases
     const purchaseResult = await pool.query(
       'INSERT INTO purchases (user_id, email, total_amount) VALUES ($1, $2, $3) RETURNING id',
@@ -40,10 +43,21 @@ router.post('/', async (req, res) => {
         'INSERT INTO purchase_items (purchase_id, product_id, product_name, category, description, image_url, price, quantity, subtotal) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
         [purchaseId, productId, productName, category, description, imageUrl, price, quantity, subtotal]
       );
+
+      // Actualizar el stock en 'instruments'
+      await pool.query(
+        'UPDATE instruments SET stock = stock - $1 WHERE id = $2',
+        [quantity, productId]
+      );
     }
+
+    // Confirmar la transacción
+    await pool.query('COMMIT');
 
     res.status(201).json({ message: 'Compra registrada exitosamente' });
   } catch (error) {
+    // Revertir la transacción en caso de error
+    await pool.query('ROLLBACK');
     console.error('Error al registrar la compra:', error);
     res.status(500).json({ error: 'Hubo un problema al registrar la compra' });
   }
