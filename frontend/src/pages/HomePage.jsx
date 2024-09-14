@@ -1,55 +1,68 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import Pagination from "./Pagination";
-import { CartContext } from "../context/CartContext";
+// frontend/src/pages/HomePage.jsx
+
+import React, { useState, useEffect, useContext } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import Pagination from './Pagination';
+import { CartContext } from '../context/CartContext';
+import axios from 'axios';
 
 function HomePage() {
   const [instruments, setInstruments] = useState([]);
   const [filteredInstruments, setFilteredInstruments] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [sortOrder, setSortOrder] = useState("asc");
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [sortOrder, setSortOrder] = useState('asc');
+  const [error, setError] = useState('');
+
   const instrumentsPerPage = 6;
 
   const { addToCart } = useContext(CartContext);
   const location = useLocation();
   const navigate = useNavigate();
 
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
   useEffect(() => {
-    fetch("/src/data/instruments.json")
-      .then((response) => response.json())
-      .then((data) => {
-        setInstruments(data);
-        setFilteredInstruments(data);
-      })
-      .catch((error) => console.error("Error al cargar los datos:", error));
-  }, []);
+    const fetchInstruments = async () => {
+      try {
+        const response = await axios.get(`${backendUrl}/api/instruments`);
+        setInstruments(response.data);
+        setFilteredInstruments(response.data);
+      } catch (error) {
+        console.error('Error al obtener los instrumentos:', error);
+        setError('Hubo un problema al cargar los instrumentos.');
+      }
+    };
+
+    fetchInstruments();
+  }, [backendUrl]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const category = params.get("category");
+    const category = params.get('category');
 
     if (category) {
       setSelectedCategory(category);
-    } else if (location.pathname === "/") {
-      setSelectedCategory("All");
+    } else if (location.pathname === '/') {
+      setSelectedCategory('All');
     }
   }, [location]);
 
   useEffect(() => {
     let filtered = instruments;
 
-    if (selectedCategory !== "All") {
+    if (selectedCategory !== 'All') {
       filtered = instruments.filter(
         (instrument) => instrument.category === selectedCategory
       );
     }
 
     filtered.sort((a, b) => {
-      return sortOrder === "asc" ? a.price - b.price : b.price - a.price;
+      return sortOrder === 'asc' ? a.price - b.price : b.price - a.price;
     });
 
     setFilteredInstruments([...filtered]);
+    setCurrentPage(1); // Reiniciar a la primera página cuando cambie el filtro o el orden
   }, [selectedCategory, sortOrder, instruments]);
 
   const indexOfLastInstrument = currentPage * instrumentsPerPage;
@@ -71,32 +84,36 @@ function HomePage() {
   };
 
   const handleAddToCart = (instrument) => {
-    addToCart(instrument, 1);
+    addToCart({ ...instrument, quantity: 1 });
     alert(`${instrument.name} añadido al carrito`);
   };
 
   const handleBuyNow = (instrument) => {
     handleAddToCart(instrument);
-    window.location.href = "/cart";
+    navigate('/cart');
   };
 
   const goToHome = () => {
-    navigate("/");
-    setSelectedCategory("All");
+    navigate('/');
+    setSelectedCategory('All');
   };
 
   const formatPrice = (price) => {
-    return new Intl.NumberFormat("es-CL", {
-      style: "currency",
-      currency: "CLP",
+    return new Intl.NumberFormat('es-CL', {
+      style: 'currency',
+      currency: 'CLP',
       minimumFractionDigits: 0,
     }).format(price);
   };
 
+  if (error) {
+    return <p className="text-danger">{error}</p>;
+  }
+
   return (
-    <div>
+    <div className="container mt-4">
       <h1>
-        <span onClick={goToHome} style={{ cursor: "pointer" }}>
+        <span onClick={goToHome} style={{ cursor: 'pointer' }}>
           Music Store
         </span>
       </h1>
@@ -116,6 +133,7 @@ function HomePage() {
             <option value="All">Todas las Categorías</option>
             <option value="Guitarras Eléctricas">Guitarras Eléctricas</option>
             <option value="Guitarras Clásicas">Guitarras Clásicas</option>
+            <option value="Guitarras & Bajos">Guitarras & Bajos</option>
             <option value="Bajos">Bajos</option>
             <option value="Pianos & Teclados">Pianos & Teclados</option>
             <option value="Baterías / Percusión">Baterías / Percusión</option>
@@ -149,9 +167,10 @@ function HomePage() {
                 className="text-decoration-none text-dark"
               >
                 <img
-                  src={instrument.imageUrl}
+                  src={`${backendUrl}${instrument.image_url}`}
                   alt={instrument.name}
                   className="card-img-top"
+                  style={{ height: '200px', objectFit: 'cover' }}
                 />
               </Link>
               <div className="card-body d-flex flex-column">
@@ -160,24 +179,39 @@ function HomePage() {
                   <strong>Precio:</strong> {formatPrice(instrument.price)}
                 </p>
                 <p className="card-text">
-                  <strong>Categoría:</strong> {instrument.category}
+                  <strong>Categoría:</strong>{' '}
+                  <Link
+                    to={`/?category=${encodeURIComponent(
+                      instrument.category
+                    )}`}
+                    className="text-decoration-none text-primary"
+                  >
+                    {instrument.category}
+                  </Link>
                 </p>
                 <p className="card-text text-dark">
                   <strong>Descripción:</strong> {instrument.description}
                 </p>
-                <div className="d-flex justify-content-between mt-auto">
-                  <button
-                    className="btn btn-primary me-2 w-50"
-                    onClick={() => handleAddToCart(instrument)}
-                  >
-                    Agregar a Carrito
-                  </button>
-                  <button
-                    className="btn btn-success w-50"
-                    onClick={() => handleBuyNow(instrument)}
-                  >
-                    Comprar Ahora
-                  </button>
+                <div className="mt-auto">
+                  <p className="card-text">
+                    <strong>Stock:</strong> {instrument.stock}
+                  </p>
+                  <div className="d-flex justify-content-between">
+                    <button
+                      className="btn btn-primary me-2 w-50"
+                      onClick={() => handleAddToCart(instrument)}
+                      disabled={instrument.stock === 0}
+                    >
+                      {instrument.stock === 0 ? 'Sin Stock' : 'Agregar a Carrito'}
+                    </button>
+                    <button
+                      className="btn btn-success w-50"
+                      onClick={() => handleBuyNow(instrument)}
+                      disabled={instrument.stock === 0}
+                    >
+                      Comprar Ahora
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -188,6 +222,7 @@ function HomePage() {
         instrumentsPerPage={instrumentsPerPage}
         totalInstruments={filteredInstruments.length}
         paginate={paginate}
+        currentPage={currentPage}
       />
     </div>
   );
