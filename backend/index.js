@@ -7,7 +7,7 @@ import cors from 'cors';
 import pool from './config/database.js';
 import usersRouter from './routes/users.js';
 import carritoRouter from './routes/carrito.js';
-import comprasRouter from './routes/compras.js';
+import comprasRouter from './routes/compras.js'; // Importar el router de compras
 import instrumentosRouter from './routes/instrumentos.js';
 
 dotenv.config();
@@ -28,7 +28,7 @@ app.use(
 // Rutas
 app.use('/api/users', usersRouter);
 app.use('/api/carrito', carritoRouter);
-app.use('/api/compras', comprasRouter);
+app.use('/api/compras', comprasRouter); // Usar el router de compras
 app.use('/api/instrumentos', instrumentosRouter);
 
 // Verificar la conexión a la base de datos
