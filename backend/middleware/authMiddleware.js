@@ -14,7 +14,12 @@ const authMiddleware = (req, res, next) => {
     req.user = decoded;  // Añadir los datos del usuario decodificados a la solicitud
     next();  // Continuar al siguiente middleware o controlador
   } catch (error) {
-    return res.status(401).json({ error: 'Token no válido o expirado.' });
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: 'Token expirado.' });
+    } else if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({ error: 'Token no válido.' });
+    }
+    return res.status(500).json({ error: 'Error en la autenticación.' });
   }
 };
 

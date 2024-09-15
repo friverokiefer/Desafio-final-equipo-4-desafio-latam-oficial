@@ -8,23 +8,23 @@ const ProfilePage = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    profile_image_url: '', // Foto de perfil
+    profile_image_url: '',
   });
 
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
 
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        // La configuración del token ya se hace en AuthContext
-        const response = await axios.get('http://localhost:5000/api/users/profile');
+        const response = await axios.get(`${backendUrl}/api/users/profile`, { withCredentials: true });
 
-        // Asegúrate de que los datos del perfil se establezcan correctamente
         setFormData({
-          name: response.data.name || '', // Asignar nombre de usuario
-          email: response.data.email || '', // Asignar correo electrónico
-          profile_image_url: response.data.profile_image_url || '', // Asignar la URL de la imagen
+          name: response.data.name || '',
+          email: response.data.email || '',
+          profile_image_url: response.data.profile_image_url || '',
         });
       } catch (error) {
         console.error('Error al cargar el perfil:', error);
@@ -32,23 +32,22 @@ const ProfilePage = () => {
       }
     };
 
-    fetchProfile(); // Cargar el perfil cuando se monta el componente
-  }, []);
+    fetchProfile();
+  }, [backendUrl]);
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value, // Actualizar el estado en tiempo real mientras el usuario escribe
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevenir la recarga de la página
+    e.preventDefault();
     try {
-      // Enviar la solicitud para actualizar el perfil
-      await axios.patch('http://localhost:5000/api/users/profile', formData);
+      await axios.patch(`${backendUrl}/api/users/profile`, formData, { withCredentials: true });
       setMessage('Perfil actualizado exitosamente.');
-      setError(''); // Limpiar cualquier mensaje de error
+      setError('');
     } catch (error) {
       console.error('Error al actualizar el perfil:', error);
       setError('Hubo un problema al actualizar el perfil. Intenta de nuevo.');
@@ -56,70 +55,70 @@ const ProfilePage = () => {
   };
 
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
-      <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Tu Perfil</h2>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-        <div>
-          <label htmlFor="name">Nombre</label>
+    <div className="container mt-4" style={{ maxWidth: '600px' }}>
+      <h2 className="text-center mb-4">Tu Perfil</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label htmlFor="name" className="form-label">Nombre</label>
           <input
             type="text"
+            className="form-control"
             id="name"
             name="name"
             placeholder="Nombre"
             value={formData.name}
             onChange={handleChange}
             required
-            style={{ width: '100%', padding: '10px', margin: '5px 0' }}
           />
         </div>
-        <div>
-          <label htmlFor="email">Correo electrónico</label>
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">Correo electrónico</label>
           <input
             type="email"
+            className="form-control"
             id="email"
             name="email"
             placeholder="Correo electrónico"
             value={formData.email}
             onChange={handleChange}
             required
-            style={{ width: '100%', padding: '10px', margin: '5px 0' }}
           />
         </div>
-        <div>
-          <label htmlFor="profile_image_url">URL de la imagen de perfil</label>
+        <div className="mb-3">
+          <label htmlFor="profile_image_url" className="form-label">URL de la imagen de perfil</label>
           <input
             type="text"
+            className="form-control"
             id="profile_image_url"
             name="profile_image_url"
             placeholder="URL de la imagen"
             value={formData.profile_image_url}
             onChange={handleChange}
-            style={{ width: '100%', padding: '10px', margin: '5px 0' }}
           />
         </div>
         {formData.profile_image_url && (
-          <div style={{ textAlign: 'center' }}>
+          <div className="text-center mb-3">
             <img
               src={formData.profile_image_url}
               alt="Perfil"
-              style={{ width: '100px', height: '100px', borderRadius: '50%', marginBottom: '10px' }}
+              style={{ width: '200px', height: '200px', borderRadius: '50%' }}
             />
           </div>
         )}
         <button
           type="submit"
-          style={{ padding: '10px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px' }}
+          className="btn btn-primary w-100"
         >
           Actualizar Perfil
         </button>
       </form>
-      <div style={{ textAlign: 'center', marginTop: '20px' }}>
+      <div className="text-center mt-4">
         <Link to="/purchase-history" className="btn btn-secondary">
           Ver Historial de Compras
         </Link>
       </div>
-      {message && <p style={{ color: 'green', textAlign: 'center', marginTop: '10px' }}>{message}</p>}
-      {error && <p style={{ color: 'red', textAlign: 'center', marginTop: '10px' }}>{error}</p>}
+      {message && <div className="alert alert-success mt-3">{message}</div>}
+      {error && <div className="alert alert-danger mt-3">{error}</div>}
     </div>
   );
 };

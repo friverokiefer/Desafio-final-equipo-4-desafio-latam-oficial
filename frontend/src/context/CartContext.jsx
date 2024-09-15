@@ -8,7 +8,7 @@ export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
-  const { isAuthenticated, user } = useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext);
 
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -19,39 +19,31 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
-  // Corrección del método addToCart
-  const addToCart = (item, quantityChange = 1) => {
-    setCart((prevCart) => {
-      const existingItemIndex = prevCart.findIndex((cartItem) => cartItem.id === item.id);
+  const addToCart = (item, quantityToAdd = 1) => {
+    const existingItemIndex = cart.findIndex((cartItem) => cartItem.id === item.id);
+    let updatedCart = [];
 
-      if (existingItemIndex !== -1) {
-        const updatedCart = [...prevCart];
-        const updatedItem = { ...updatedCart[existingItemIndex] }; // Copia del item
+    if (existingItemIndex !== -1) {
+      const existingItem = cart[existingItemIndex];
+      const newQuantity = existingItem.quantity + quantityToAdd;
 
-        // Actualizar cantidad sin duplicar el cambio
-        updatedItem.quantity += quantityChange;
-
-        // Validación para evitar cantidades negativas o superiores al stock
-        if (updatedItem.quantity <= 0) {
-          updatedCart.splice(existingItemIndex, 1); // Eliminar si la cantidad es cero
-        } else if (updatedItem.quantity <= item.stock) {
-          updatedCart[existingItemIndex] = updatedItem; // Actualizar la cantidad
-        } else {
-          alert('No hay suficiente stock disponible.');
-          return prevCart; // No hacer cambios si la cantidad es superior al stock
-        }
-
-        return updatedCart;
-      } else {
-        // Agregar nuevo producto si no está en el carrito
-        if (quantityChange > 0 && quantityChange <= item.stock) {
-          return [...prevCart, { ...item, quantity: quantityChange }];
-        } else {
-          alert('No hay suficiente stock disponible.');
-          return prevCart;
-        }
+      if (newQuantity > item.stock) {
+        // No hay suficiente stock disponible
+        return false;
       }
-    });
+
+      updatedCart = [...cart];
+      updatedCart[existingItemIndex] = { ...existingItem, quantity: newQuantity };
+    } else {
+      if (quantityToAdd > item.stock) {
+        // No hay suficiente stock disponible
+        return false;
+      }
+      updatedCart = [...cart, { ...item, quantity: quantityToAdd }];
+    }
+
+    setCart(updatedCart);
+    return true;
   };
 
   const removeFromCart = (index) => {
@@ -66,17 +58,19 @@ export const CartProvider = ({ children }) => {
   const completePurchase = async () => {
     if (isAuthenticated) {
       try {
-        const purchases = cart.map((item) => ({
-          userId: user.id,
-          productId: item.id,
-          productName: item.name,
-          quantity: item.quantity,
-        }));
+        const totalAmount = calculateTotal();
+        const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
-        await axios.post('/api/compras', { purchases });
+        await axios.post(
+          `${backendUrl}/api/compras`,
+          { cart, totalAmount },
+          { withCredentials: true }
+        );
+
         clearCart();
       } catch (error) {
         console.error('Error al registrar la compra:', error);
+        throw new Error('Hubo un problema al registrar la compra.');
       }
     } else {
       clearCart();
@@ -88,8 +82,12 @@ export const CartProvider = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, completePurchase, calculateTotal }}>
+    <CartContext.Provider
+      value={{ cart, addToCart, removeFromCart, clearCart, completePurchase, calculateTotal }}
+    >
       {children}
     </CartContext.Provider>
   );
 };
+
+export default CartContext;

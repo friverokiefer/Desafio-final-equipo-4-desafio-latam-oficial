@@ -1,13 +1,15 @@
 // frontend/src/pages/CartPage.jsx
 
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { CartContext } from '../context/CartContext';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 
 function CartPage() {
   const { cart, removeFromCart, addToCart, clearCart, calculateTotal } = useContext(CartContext);
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
   const navigate = useNavigate();
 
   const formatPrice = (price) => {
@@ -19,14 +21,14 @@ function CartPage() {
   };
 
   const handleDecreaseQuantity = (item) => {
-    addToCart(item, -1); // Disminuir la cantidad
+    addToCart(item, -1);
   };
 
   const handleIncreaseQuantity = (item) => {
     if (item.quantity < item.stock) {
-      addToCart(item, 1); // Aumentar la cantidad
+      addToCart(item, 1);
     } else {
-      alert('No hay más stock disponible de este producto.');
+      setErrorMessage('No hay más stock disponible de este producto.');
     }
   };
 
@@ -39,18 +41,28 @@ function CartPage() {
         totalAmount,
       }, { withCredentials: true });
 
-      alert('Compra exitosa. Se ha registrado en el historial.');
       clearCart();
-      navigate('/profile/purchases');
+      navigate('/purchase-history');
+      setSuccessMessage('Compra exitosa. Se ha registrado en el historial.');
     } catch (error) {
       console.error('Error al procesar la compra:', error);
-      alert('Hubo un problema al registrar la compra.');
+      setErrorMessage('Hubo un problema al registrar la compra.');
     }
   };
 
   return (
     <div className="container mt-4">
       <h1>Carrito de Compras</h1>
+      {errorMessage && (
+        <div className="alert alert-danger" role="alert">
+          {errorMessage}
+        </div>
+      )}
+      {successMessage && (
+        <div className="alert alert-success" role="alert">
+          {successMessage}
+        </div>
+      )}
       {cart.length === 0 ? (
         <p>El carrito está vacío.</p>
       ) : (

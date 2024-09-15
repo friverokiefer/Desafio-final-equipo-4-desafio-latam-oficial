@@ -1,10 +1,11 @@
 // frontend/src/pages/HomePage.jsx
 
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Pagination from './Pagination';
 import { CartContext } from '../context/CartContext';
 import axios from 'axios';
+import * as bootstrap from 'bootstrap'; // Importamos bootstrap para usarlo en el componente
 
 function HomePage() {
   const [instruments, setInstruments] = useState([]);
@@ -13,6 +14,7 @@ function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [sortOrder, setSortOrder] = useState('asc');
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const instrumentsPerPage = 6;
 
@@ -20,7 +22,10 @@ function HomePage() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+
+  // Referencia para el Toast
+  const toastRef = useRef(null);
 
   useEffect(() => {
     const fetchInstruments = async () => {
@@ -83,14 +88,33 @@ function HomePage() {
     setSortOrder(e.target.value);
   };
 
+  const showToast = () => {
+    const toast = new bootstrap.Toast(toastRef.current);
+    toast.show();
+  };
+
   const handleAddToCart = (instrument) => {
-    addToCart({ ...instrument, quantity: 1 });
-    alert(`${instrument.name} añadido al carrito`);
+    const success = addToCart(instrument, 1);
+    if (success) {
+      setSuccessMessage(`${instrument.name} añadido al carrito`);
+      setError('');
+      showToast();
+    } else {
+      setError('No hay suficiente stock disponible.');
+      setSuccessMessage('');
+      showToast();
+    }
   };
 
   const handleBuyNow = (instrument) => {
-    handleAddToCart(instrument);
-    navigate('/cart');
+    const success = addToCart(instrument, 1);
+    if (success) {
+      navigate('/cart');
+    } else {
+      setError('No hay suficiente stock disponible.');
+      setSuccessMessage('');
+      showToast();
+    }
   };
 
   const goToHome = () => {
@@ -106,18 +130,43 @@ function HomePage() {
     }).format(price);
   };
 
-  if (error) {
-    return <p className="text-danger">{error}</p>;
-  }
-
   return (
-    <div className="container mt-4">
+    <div className="container mt-4 position-relative">
       <h1>
         <span onClick={goToHome} style={{ cursor: 'pointer' }}>
           Music Store
         </span>
       </h1>
       <p>Explora nuestra colección de instrumentos musicales por categorías.</p>
+
+      {/* Toast de Bootstrap */}
+      <div
+        className="toast-container position-fixed bottom-0 end-0 p-3"
+        style={{ zIndex: 9999 }}
+      >
+        <div
+          className="toast"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+          ref={toastRef}
+        >
+          <div
+            className={`toast-header ${error ? 'bg-danger' : 'bg-success'} text-white`}
+          >
+            <strong className="me-auto">Notificación</strong>
+            <button
+              type="button"
+              className="btn-close btn-close-white"
+              data-bs-dismiss="toast"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div className="toast-body">
+            {successMessage || error}
+          </div>
+        </div>
+      </div>
 
       <div className="row mb-4">
         <div className="col-md-6">
@@ -181,9 +230,7 @@ function HomePage() {
                 <p className="card-text">
                   <strong>Categoría:</strong>{' '}
                   <Link
-                    to={`/?category=${encodeURIComponent(
-                      instrument.category
-                    )}`}
+                    to={`/?category=${encodeURIComponent(instrument.category)}`}
                     className="text-decoration-none text-primary"
                   >
                     {instrument.category}

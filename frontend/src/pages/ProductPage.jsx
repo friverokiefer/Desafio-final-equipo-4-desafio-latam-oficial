@@ -1,3 +1,5 @@
+// frontend/src/pages/ProductPage.jsx
+
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { CartContext } from '../context/CartContext';
@@ -9,8 +11,9 @@ function ProductPage() {
   const [instrument, setInstrument] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,11 +34,19 @@ function ProductPage() {
 
   const handleAddToCart = () => {
     if (quantity > instrument.stock) {
-      alert('No hay suficiente stock disponible.');
+      setError('No hay suficiente stock disponible.');
+      setSuccessMessage('');
       return;
     }
-    addToCart({ ...instrument, quantity: parseInt(quantity) });
-    alert(`${quantity} unidad(es) de ${instrument.name} añadida(s) al carrito`);
+    const success = addToCart(instrument, parseInt(quantity));
+    if (success) {
+      setSuccessMessage(`${quantity} unidad(es) de ${instrument.name} añadida(s) al carrito`);
+      setError('');
+      setTimeout(() => setSuccessMessage(''), 3000); // Ocultar el mensaje después de 3 segundos
+    } else {
+      setError('No hay suficiente stock disponible.');
+      setSuccessMessage('');
+    }
   };
 
   const handleBuyNow = () => {
@@ -51,7 +62,7 @@ function ProductPage() {
     }).format(price);
   };
 
-  if (error) {
+  if (error && !instrument) {
     return <p className="text-danger">{error}</p>;
   }
 
@@ -64,6 +75,16 @@ function ProductPage() {
   return (
     <div className="container mt-4">
       <h1 className="mb-4">{instrument.name}</h1>
+      {successMessage && (
+        <div className="alert alert-success" role="alert">
+          {successMessage}
+        </div>
+      )}
+      {error && (
+        <div className="alert alert-danger" role="alert">
+          {error}
+        </div>
+      )}
       <div className="row">
         <div className="col-md-4">
           <img
