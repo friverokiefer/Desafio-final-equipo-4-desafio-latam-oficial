@@ -15,7 +15,8 @@ router.post('/', async (req, res) => {
 
   try {
     // Obtener el token del encabezado Authorization
-    const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+    const token =
+      req.headers.authorization && req.headers.authorization.split(' ')[1];
     if (token) {
       // Decodificar el token para obtener el userId y email
       const decoded = jwt.verify(token, process.env.SECRET_KEY);
@@ -36,19 +37,43 @@ router.post('/', async (req, res) => {
 
     // Insertar los items en la tabla purchase_items
     for (let item of cart) {
-      const { id: productId, name: productName, category, description, imageUrl, price, quantity } = item;
+      const {
+        id: productId,
+        name: productName,
+        category,
+        description,
+        price,
+        quantity,
+      } = item;
       const subtotal = price * quantity;
+
+      // Obtener image_url desde la tabla instruments
+      const instrumentResult = await pool.query(
+        'SELECT image_url FROM instruments WHERE id = $1',
+        [productId]
+      );
+      const image_url = instrumentResult.rows[0].image_url;
 
       await pool.query(
         'INSERT INTO purchase_items (purchase_id, product_id, product_name, category, description, image_url, price, quantity, subtotal) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
-        [purchaseId, productId, productName, category, description, imageUrl, price, quantity, subtotal]
+        [
+          purchaseId,
+          productId,
+          productName,
+          category,
+          description,
+          image_url,
+          price,
+          quantity,
+          subtotal,
+        ]
       );
 
       // Actualizar el stock en 'instruments'
-      await pool.query(
-        'UPDATE instruments SET stock = stock - $1 WHERE id = $2',
-        [quantity, productId]
-      );
+      await pool.query('UPDATE instruments SET stock = stock - $1 WHERE id = $2', [
+        quantity,
+        productId,
+      ]);
     }
 
     // Confirmar la transacción
@@ -67,7 +92,8 @@ router.post('/', async (req, res) => {
 router.get('/historial', async (req, res) => {
   try {
     // Obtener el token del encabezado Authorization
-    const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+    const token =
+      req.headers.authorization && req.headers.authorization.split(' ')[1];
     if (!token) {
       return res.status(401).json({ error: 'No autorizado' });
     }
@@ -91,14 +117,16 @@ router.get('/historial', async (req, res) => {
 
       purchases.push({
         ...purchase,
-        items: itemsResult.rows
+        items: itemsResult.rows,
       });
     }
 
     res.json(purchases);
   } catch (error) {
     console.error('Error al obtener el historial de compras:', error);
-    res.status(500).json({ error: 'Hubo un problema al obtener el historial de compras' });
+    res
+      .status(500)
+      .json({ error: 'Hubo un problema al obtener el historial de compras' });
   }
 });
 

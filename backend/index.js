@@ -1,5 +1,3 @@
-// backend/index.js
-
 import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
@@ -12,14 +10,19 @@ import instrumentosRouter from './routes/instrumentos.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-dotenv.config();
+// Determinar qué archivo de variables de entorno cargar
+const envFile = process.env.NODE_ENV === 'test' ? '.env.test' : '.env';
+dotenv.config({ path: envFile });
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-// Obtener __dirname en ES6
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Obtener __dirname sin usar 'import.meta'
+let __dirname;
+if (typeof __dirname === 'undefined') {
+  const __filename = fileURLToPath(import.meta.url);
+  __dirname = path.dirname(__filename);
+}
 
 // Middlewares
 app.use(express.json());
@@ -33,7 +36,7 @@ app.use(
   })
 );
 
-// Configurar el servidor para servir archivos estáticos desde la carpeta 'public'
+// Servir archivos estáticos desde la carpeta 'public'
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
 // Rutas
@@ -52,7 +55,12 @@ pool.connect((err) => {
   }
 });
 
-// Inicializar el servidor
-app.listen(port, () => {
-  console.log(`Servidor corriendo en el puerto ${port}`);
-});
+// Exportar la aplicación para usarla en los tests
+export default app;
+
+// Iniciar el servidor solo si no se está ejecutando en modo de prueba
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => {
+    console.log(`Servidor corriendo en el puerto ${port}`);
+  });
+}

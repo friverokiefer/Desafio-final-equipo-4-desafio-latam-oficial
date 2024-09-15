@@ -3,27 +3,29 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const { login } = useContext(AuthContext); // Obtenemos la función login del contexto
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage(''); // Limpiamos errores anteriores
+    setErrorMessage('');
     try {
-      const response = await axios.post('http://localhost:5000/api/users/login', {
+      const response = await axios.post(`${backendUrl}/api/users/login`, {
         email,
         password,
       });
 
-      // Si se recibe un token, lo pasamos a la función de login
       if (response.data.token) {
-        console.log('Token recibido:', response.data.token);
-        await login(response.data.token); // Llamamos a la función de login
-        // No es necesario navegar aquí, ya que la función login lo hace
+        await login(response.data.token);
+        navigate('/profile'); // Navegamos aquí después de iniciar sesión
       } else {
         setErrorMessage('Error: No se recibió un token.');
       }
@@ -38,9 +40,9 @@ function LoginPage() {
   };
 
   return (
-    <div>
+    <div className="container mt-4">
       <h1>Iniciar Sesión</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="mt-3">
         <div className="mb-3">
           <label htmlFor="email" className="form-label">
             Correo Electrónico
@@ -52,6 +54,7 @@ function LoginPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            placeholder="Ingresa tu correo electrónico"
           />
         </div>
         <div className="mb-3">
@@ -65,10 +68,15 @@ function LoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            placeholder="Ingresa tu contraseña"
           />
         </div>
-        {errorMessage && <p className="text-danger">{errorMessage}</p>}
-        <button type="submit" className="btn btn-primary">
+        {errorMessage && (
+          <div className="alert alert-danger" role="alert">
+            {errorMessage}
+          </div>
+        )}
+        <button type="submit" className="btn btn-primary w-100">
           Iniciar Sesión
         </button>
       </form>

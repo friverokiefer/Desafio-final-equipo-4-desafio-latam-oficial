@@ -1,3 +1,5 @@
+// frontend/src/components/Header.jsx
+
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
@@ -10,9 +12,11 @@ function Header() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();  // Cerrar sesión
-    navigate("/login");  // Redirigir al login después de cerrar sesión
+    logout();
+    navigate("/login");
   };
+
+  const totalItemsInCart = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -61,7 +65,7 @@ function Header() {
             )}
             <li className="nav-item">
               <Link className="nav-link d-flex align-items-center" to="/cart">
-                Carrito <span className="ms-1">({cart.length})</span> <FaShoppingCart className="ms-1" />
+                Carrito <span className="ms-1">({totalItemsInCart})</span> <FaShoppingCart className="ms-1" />
               </Link>
             </li>
           </ul>
