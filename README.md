@@ -6,26 +6,6 @@ Ahi están los detalles de la primera entrega
 
 LEER ENTREGA 3 en pdf
 
-.env local 
-
-
-
-DB_USER=feliperiverokiefer
-
-DB_PASSWORD=***REMOVED***
-
-DB_HOST=localhost
-
-DB_PORT=5432
-
-DB_NAME=music_store_jwt
-
-SECRET_KEY=***REMOVED***
-
-PORT=5000
-
-
-
 
 
 
