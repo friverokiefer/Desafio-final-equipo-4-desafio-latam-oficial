@@ -17,11 +17,13 @@ dotenv.config({ path: envFile });
 const app = express();
 const port = process.env.PORT || 5000;
 
-// Obtener __dirname sin usar 'import.meta'
+// Obtener __dirname en ES6
 let __dirname;
-if (typeof __dirname === 'undefined') {
+if (process.env.NODE_ENV !== 'test') {
   const __filename = fileURLToPath(import.meta.url);
   __dirname = path.dirname(__filename);
+} else {
+  __dirname = path.resolve();
 }
 
 // Middlewares
@@ -31,7 +33,7 @@ app.use(cookieParser());
 // Configurar CORS
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173', // Permitir URL del frontend en producción
+    origin: 'http://localhost:5173', // URL del frontend en desarrollo
     credentials: true,
   })
 );
