@@ -1,5 +1,3 @@
-// backend/config/database.js
-
 import pkg from 'pg';
 const { Pool } = pkg;
 import dotenv from 'dotenv';
@@ -17,16 +15,21 @@ requiredEnvVariables.forEach((key) => {
   }
 });
 
-// Crear la instancia de Pool para la conexión a la base de datos productiva con SSL
+// Verificar si estamos en entorno de producción o desarrollo
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Crear la instancia de Pool para la conexión a la base de datos
 const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
-  ssl: {
-    rejectUnauthorized: false, // Permitir conexiones SSL sin verificar el certificado
-  },
+  ssl: isProduction
+    ? {
+        rejectUnauthorized: false, // Permitir conexiones SSL en producción
+      }
+    : false, // Deshabilitar SSL en entornos de desarrollo/local
 });
 
 export default pool;
