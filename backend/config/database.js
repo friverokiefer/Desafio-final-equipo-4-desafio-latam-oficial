@@ -17,13 +17,16 @@ requiredEnvVariables.forEach((key) => {
   }
 });
 
-// Crear la instancia de Pool para la conexión a la base de datos productiva
+// Crear la instancia de Pool para la conexión a la base de datos productiva con SSL
 const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
+  ssl: {
+    rejectUnauthorized: false, // Permitir conexiones SSL sin verificar el certificado
+  },
 });
 
 export default pool;
